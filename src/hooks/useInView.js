@@ -5,23 +5,26 @@ export const useInView = (ref) => {
     const [isInView, setIsInView] = useState(false);
 
     useEffect(() => {
+        const currentRef = ref.current;  // captura valor atual da ref
+
         const observer = new IntersectionObserver(
             ([entry]) => setIsInView(entry.isIntersecting),
             {
-                threshold: 0.1, // Define quanto do elemento precisa estar visível (0.1 = 10%)
+                threshold: 0.1,
             }
         );
 
-        if (ref.current) {
-            observer.observe(ref.current);
+        if (currentRef) {
+            observer.observe(currentRef);
         }
 
         return () => {
-            if (ref.current) {
-                observer.unobserve(ref.current);
+            if (currentRef) {
+                observer.unobserve(currentRef);
             }
         };
     }, [ref]);
+
 
     return isInView;
 };
